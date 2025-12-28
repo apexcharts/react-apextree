@@ -1,0 +1,19 @@
+# source
+src/
+
+# demo
+demo/
+
+# config
+tsconfig.json
+tsup.config.ts
+.gitignore
+
+# dev
+node_modules/
+.vscode/
+.idea/
+
+# misc
+*.log
+.DS_Store

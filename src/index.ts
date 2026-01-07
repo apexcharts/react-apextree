@@ -1,4 +1,5 @@
-export { ApexTreeChart } from './ApexTreeChart';
+export { ApexTreeChart } from "./ApexTreeChart";
+export { setApexTreeLicense } from "./utils";
 export type {
   ApexTreeProps,
   ApexTreeRef,
@@ -6,4 +7,4 @@ export type {
   NodeData,
   NodeOptions,
   TreeDirection,
-} from './types';
+} from "./types";

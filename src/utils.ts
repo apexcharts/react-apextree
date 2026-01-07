@@ -1,10 +1,31 @@
-import type { ApexTreeProps } from './types';
+import ApexTree from "apextree";
+import type { ApexTreeProps } from "./types";
+
+/**
+ * sets the ApexTree license key globally
+ * should be called once at app initialization, before rendering any charts
+ *
+ * @param licenseKey - the license key string provided by ApexCharts
+ *
+ * @example
+ * ```tsx
+ * import { setApexTreeLicense } from 'react-apextree';
+ *
+ * // call this at the top of your app, before rendering any charts
+ * setApexTreeLicense('your-license-key-here');
+ * ```
+ */
+export function setApexTreeLicense(licenseKey: string): void {
+  ApexTree.setLicense(licenseKey);
+}
 
 /**
  * extracts ApexTree options from React props
  * filters out react-specific props (className, style, data)
  */
-export function buildOptions<T>(props: ApexTreeProps<T>): Record<string, unknown> {
+export function buildOptions<T>(
+  props: ApexTreeProps<T>
+): Record<string, unknown> {
   const {
     // exclude react-specific props
     className: _className,

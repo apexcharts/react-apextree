@@ -12,19 +12,21 @@ export function StyledNodesExample() {
       <div className="tree-container">
         <ApexTreeChart
           data={styledTreeData}
-          width={800}
-          height={500}
-          direction="left"
-          nodeWidth={130}
-          nodeHeight={45}
-          childrenSpacing={120}
-          siblingSpacing={25}
-          fontSize="14px"
-          fontWeight="500"
-          borderWidth={2}
-          borderRadius="8px"
-          highlightOnHover={true}
-          enableToolbar={true}
+          options={{
+            width: 800,
+            height: 500,
+            direction: 'left',
+            nodeWidth: 130,
+            nodeHeight: 45,
+            childrenSpacing: 120,
+            siblingSpacing: 25,
+            fontSize: '14px',
+            fontWeight: '500',
+            borderWidth: 2,
+            borderRadius: '8px',
+            highlightOnHover: true,
+            enableToolbar: true,
+          }}
         />
       </div>
     </div>

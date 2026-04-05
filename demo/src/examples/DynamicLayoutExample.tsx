@@ -49,19 +49,21 @@ export function DynamicLayoutExample() {
         <ApexTreeChart
           ref={treeRef}
           data={basicOrgData}
-          width={800}
-          height={500}
-          direction={currentDirection}
-          nodeWidth={120}
-          nodeHeight={50}
-          childrenSpacing={80}
-          siblingSpacing={30}
-          highlightOnHover={true}
-          nodeBGColor="#e3f2fd"
-          nodeBGColorHover="#bbdefb"
-          borderColor="#2196f3"
-          borderColorHover="#1976d2"
-          fontColor="#1565c0"
+          options={{
+            width: 800,
+            height: 500,
+            direction: currentDirection,
+            nodeWidth: 120,
+            nodeHeight: 50,
+            childrenSpacing: 80,
+            siblingSpacing: 30,
+            highlightOnHover: true,
+            nodeBGColor: '#e3f2fd',
+            nodeBGColorHover: '#bbdefb',
+            borderColor: '#2196f3',
+            borderColorHover: '#1976d2',
+            fontColor: '#1565c0',
+          }}
         />
       </div>
     </div>

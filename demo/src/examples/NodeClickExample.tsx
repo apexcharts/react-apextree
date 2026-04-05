@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { ApexTreeChart, type NodeData } from 'react-apextree';
+import { ApexTreeChart, type NestedNode } from 'react-apextree';
 import { basicOrgData } from '../data';
 
 export function NodeClickExample() {
-  const [selectedNode, setSelectedNode] = useState<NodeData | null>(null);
+  const [selectedNode, setSelectedNode] = useState<NestedNode | null>(null);
   const [clickHistory, setClickHistory] = useState<string[]>([]);
 
-  const handleNodeClick = (node: NodeData) => {
-    setSelectedNode(node);
-    setClickHistory((prev) => [node.name || node.id, ...prev.slice(0, 4)]);
+  const handleNodeClick = (node: unknown) => {
+    const n = node as NestedNode;
+    setSelectedNode(n);
+    setClickHistory((prev) => [n.name || n.id, ...prev.slice(0, 4)]);
   };
 
   const clearHistory = () => {
@@ -78,20 +79,22 @@ export function NodeClickExample() {
       <div className="tree-container">
         <ApexTreeChart
           data={basicOrgData}
-          width={800}
-          height={450}
-          direction="top"
-          nodeWidth={120}
-          nodeHeight={50}
-          childrenSpacing={80}
-          siblingSpacing={30}
           onNodeClick={handleNodeClick}
-          highlightOnHover={true}
-          nodeBGColor="#fff"
-          nodeBGColorHover="#fff8e1"
-          borderColor="#bdbdbd"
-          borderColorHover="#ffa000"
-          enableToolbar={true}
+          options={{
+            width: 800,
+            height: 450,
+            direction: 'top',
+            nodeWidth: 120,
+            nodeHeight: 50,
+            childrenSpacing: 80,
+            siblingSpacing: 30,
+            highlightOnHover: true,
+            nodeBGColor: '#fff',
+            nodeBGColorHover: '#fff8e1',
+            borderColor: '#bdbdbd',
+            borderColorHover: '#ffa000',
+            enableToolbar: true,
+          }}
         />
       </div>
     </div>

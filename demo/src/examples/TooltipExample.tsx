@@ -1,8 +1,7 @@
-import { ApexTreeChart } from 'react-apextree';
+import { ApexTreeChart, type NestedNode } from 'react-apextree';
 import { tooltipData, type TooltipPersonData } from '../data';
 
 export function TooltipExample() {
-  // custom tooltip template
   const tooltipTemplate = (content: TooltipPersonData) => {
     return `
       <div style="
@@ -37,7 +36,6 @@ export function TooltipExample() {
     `;
   };
 
-  // node template showing just the name
   const nodeTemplate = (content: TooltipPersonData) => {
     return `
       <div style="
@@ -64,27 +62,29 @@ export function TooltipExample() {
 
       <div className="tree-container">
         <ApexTreeChart
-          data={tooltipData}
-          contentKey="data"
-          width={800}
-          height={450}
-          direction="top"
-          nodeWidth={150}
-          nodeHeight={50}
-          childrenSpacing={80}
-          siblingSpacing={30}
-          nodeTemplate={nodeTemplate as (content: unknown) => string}
-          enableTooltip={true}
-          tooltipTemplate={tooltipTemplate as (content: unknown) => string}
-          tooltipMaxWidth={250}
-          tooltipBGColor="#ffffff"
-          tooltipBorderColor="#e0e0e0"
-          highlightOnHover={true}
-          nodeBGColor="#f5f5f5"
-          nodeBGColorHover="#e8eaf6"
-          borderColor="#9e9e9e"
-          borderColorHover="#5c6bc0"
-          enableToolbar={true}
+          data={tooltipData as unknown as NestedNode}
+          options={{
+            contentKey: 'data',
+            width: 800,
+            height: 450,
+            direction: 'top',
+            nodeWidth: 150,
+            nodeHeight: 50,
+            childrenSpacing: 80,
+            siblingSpacing: 30,
+            nodeTemplate: nodeTemplate as unknown as (content: string) => string,
+            enableTooltip: true,
+            tooltipTemplate: tooltipTemplate as unknown as (content: string) => string,
+            tooltipMaxWidth: 250,
+            tooltipBGColor: '#ffffff',
+            tooltipBorderColor: '#e0e0e0',
+            highlightOnHover: true,
+            nodeBGColor: '#f5f5f5',
+            nodeBGColorHover: '#e8eaf6',
+            borderColor: '#9e9e9e',
+            borderColorHover: '#5c6bc0',
+            enableToolbar: true,
+          }}
         />
       </div>
     </div>

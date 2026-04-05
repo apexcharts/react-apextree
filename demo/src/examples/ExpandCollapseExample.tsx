@@ -6,7 +6,6 @@ export function ExpandCollapseExample() {
   const treeRef = useRef<ApexTreeRef>(null);
   const [collapsedNodes, setCollapsedNodes] = useState<Set<string>>(new Set());
 
-  // nodes that can be collapsed (have children)
   const collapsibleNodes = [
     { id: 'engineering', label: 'Engineering' },
     { id: 'frontend', label: 'Frontend' },
@@ -74,20 +73,22 @@ export function ExpandCollapseExample() {
         <ApexTreeChart
           ref={treeRef}
           data={expandableTreeData}
-          width={800}
-          height={500}
-          direction="top"
-          nodeWidth={120}
-          nodeHeight={45}
-          childrenSpacing={70}
-          siblingSpacing={20}
-          enableExpandCollapse={true}
-          highlightOnHover={true}
-          enableToolbar={true}
-          nodeBGColor="#fff"
-          borderColor="#5c6bc0"
-          borderColorHover="#3949ab"
-          fontColor="#333"
+          options={{
+            width: 800,
+            height: 500,
+            direction: 'top',
+            nodeWidth: 120,
+            nodeHeight: 45,
+            childrenSpacing: 70,
+            siblingSpacing: 20,
+            enableExpandCollapse: true,
+            highlightOnHover: true,
+            enableToolbar: true,
+            nodeBGColor: '#fff',
+            borderColor: '#5c6bc0',
+            borderColorHover: '#3949ab',
+            fontColor: '#333',
+          }}
         />
       </div>
     </div>

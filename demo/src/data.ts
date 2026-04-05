@@ -1,33 +1,37 @@
-import type { NodeData } from 'react-apextree';
+import type { NestedNode } from 'react-apextree';
 
 /**
  * basic org chart data
  */
-export const basicOrgData: NodeData = {
+export const basicOrgData: NestedNode = {
   id: '1',
   name: 'CEO',
+  data: undefined,
   children: [
     {
       id: '2',
       name: 'CTO',
+      data: undefined,
       children: [
-        { id: '3', name: 'Dev Lead' },
-        { id: '4', name: 'QA Lead' },
+        { id: '3', name: 'Dev Lead', data: undefined, children: [] },
+        { id: '4', name: 'QA Lead', data: undefined, children: [] },
       ],
     },
     {
       id: '5',
       name: 'CFO',
+      data: undefined,
       children: [
-        { id: '6', name: 'Accountant' },
+        { id: '6', name: 'Accountant', data: undefined, children: [] },
       ],
     },
     {
       id: '7',
       name: 'COO',
+      data: undefined,
       children: [
-        { id: '8', name: 'HR Manager' },
-        { id: '9', name: 'Office Manager' },
+        { id: '8', name: 'HR Manager', data: undefined, children: [] },
+        { id: '9', name: 'Office Manager', data: undefined, children: [] },
       ],
     },
   ],
@@ -42,8 +46,9 @@ export interface PersonData {
   imageURL: string;
 }
 
-export const teamData: NodeData<PersonData> = {
+export const teamData: NestedNode<PersonData> = {
   id: 'ceo',
+  name: 'CEO',
   data: {
     name: 'Sarah Chen',
     title: 'CEO',
@@ -52,6 +57,7 @@ export const teamData: NodeData<PersonData> = {
   children: [
     {
       id: 'cto',
+      name: 'CTO',
       data: {
         name: 'Michael Torres',
         title: 'CTO',
@@ -60,24 +66,29 @@ export const teamData: NodeData<PersonData> = {
       children: [
         {
           id: 'dev1',
+          name: 'Senior Dev',
           data: {
             name: 'Emily Park',
             title: 'Senior Dev',
             imageURL: 'https://i.pravatar.cc/300?img=45',
           },
+          children: [],
         },
         {
           id: 'dev2',
+          name: 'Senior Dev',
           data: {
             name: 'James Wilson',
             title: 'Senior Dev',
             imageURL: 'https://i.pravatar.cc/300?img=52',
           },
+          children: [],
         },
       ],
     },
     {
       id: 'cfo',
+      name: 'CFO',
       data: {
         name: 'Lisa Anderson',
         title: 'CFO',
@@ -86,11 +97,13 @@ export const teamData: NodeData<PersonData> = {
       children: [
         {
           id: 'acc1',
+          name: 'Accountant',
           data: {
             name: 'David Kim',
             title: 'Accountant',
             imageURL: 'https://i.pravatar.cc/300?img=59',
           },
+          children: [],
         },
       ],
     },
@@ -98,87 +111,84 @@ export const teamData: NodeData<PersonData> = {
 };
 
 /**
- * data with custom node styling
+ * data with custom node styling.
+ * Per-node options are cast via `unknown` because the core NestedNode.options
+ * type is the full intersection (all fields required), but core only reads the
+ * fields that are actually provided at runtime.
  */
-export const styledTreeData: NodeData = {
+type NodeOpts = NestedNode['options'];
+
+function nodeOpts(o: {
+  nodeBGColor?: string;
+  borderColor?: string;
+  fontColor?: string;
+}): NodeOpts {
+  return o as unknown as NodeOpts;
+}
+
+export const styledTreeData: NestedNode = {
   id: 'root',
   name: 'Species',
-  options: {
-    nodeBGColor: '#e8f5e9',
-    borderColor: '#4caf50',
-    fontColor: '#2e7d32',
-  },
+  data: undefined,
+  options: nodeOpts({ nodeBGColor: '#e8f5e9', borderColor: '#4caf50', fontColor: '#2e7d32' }),
   children: [
     {
       id: 'plants',
       name: 'Plants',
-      options: {
-        nodeBGColor: '#c8e6c9',
-        borderColor: '#66bb6a',
-        fontColor: '#388e3c',
-      },
+      data: undefined,
+      options: nodeOpts({ nodeBGColor: '#c8e6c9', borderColor: '#66bb6a', fontColor: '#388e3c' }),
       children: [
         {
           id: 'trees',
           name: 'Trees',
-          options: {
-            nodeBGColor: '#a5d6a7',
-            borderColor: '#81c784',
-          },
+          data: undefined,
+          options: nodeOpts({ nodeBGColor: '#a5d6a7', borderColor: '#81c784' }),
+          children: [],
         },
         {
           id: 'flowers',
           name: 'Flowers',
-          options: {
-            nodeBGColor: '#f8bbd9',
-            borderColor: '#f06292',
-          },
+          data: undefined,
+          options: nodeOpts({ nodeBGColor: '#f8bbd9', borderColor: '#f06292' }),
+          children: [],
         },
       ],
     },
     {
       id: 'animals',
       name: 'Animals',
-      options: {
-        nodeBGColor: '#bbdefb',
-        borderColor: '#42a5f5',
-        fontColor: '#1565c0',
-      },
+      data: undefined,
+      options: nodeOpts({ nodeBGColor: '#bbdefb', borderColor: '#42a5f5', fontColor: '#1565c0' }),
       children: [
         {
           id: 'mammals',
           name: 'Mammals',
-          options: {
-            nodeBGColor: '#90caf9',
-            borderColor: '#64b5f6',
-          },
+          data: undefined,
+          options: nodeOpts({ nodeBGColor: '#90caf9', borderColor: '#64b5f6' }),
+          children: [],
         },
         {
           id: 'birds',
           name: 'Birds',
-          options: {
-            nodeBGColor: '#ffe0b2',
-            borderColor: '#ffb74d',
-          },
+          data: undefined,
+          options: nodeOpts({ nodeBGColor: '#ffe0b2', borderColor: '#ffb74d' }),
+          children: [],
         },
         {
           id: 'fish',
           name: 'Fish',
-          options: {
-            nodeBGColor: '#b2ebf2',
-            borderColor: '#4dd0e1',
-          },
+          data: undefined,
+          options: nodeOpts({ nodeBGColor: '#b2ebf2', borderColor: '#4dd0e1' }),
+          children: [],
         },
       ],
     },
     {
       id: 'fungi',
       name: 'Fungi',
-      options: {
-        nodeBGColor: '#f3e5f5',
-        borderColor: '#ba68c8',
-        fontColor: '#7b1fa2',
-      },
+      data: undefined,
+      options: nodeOpts({ nodeBGColor: '#f3e5f5', borderColor: '#ba68c8', fontColor: '#7b1fa2' }),
+      children: [],
     },
   ],
 };
@@ -186,36 +196,41 @@ export const styledTreeData: NodeData = {
 /**
  * larger tree for expand/collapse demo
  */
-export const expandableTreeData: NodeData = {
+export const expandableTreeData: NestedNode = {
   id: 'company',
   name: 'TechCorp Inc.',
+  data: undefined,
   children: [
     {
       id: 'engineering',
       name: 'Engineering',
+      data: undefined,
       children: [
         {
           id: 'frontend',
           name: 'Frontend',
+          data: undefined,
           children: [
-            { id: 'fe1', name: 'React Team' },
-            { id: 'fe2', name: 'Vue Team' },
+            { id: 'fe1', name: 'React Team', data: undefined, children: [] },
+            { id: 'fe2', name: 'Vue Team', data: undefined, children: [] },
           ],
         },
         {
           id: 'backend',
           name: 'Backend',
+          data: undefined,
           children: [
-            { id: 'be1', name: 'API Team' },
-            { id: 'be2', name: 'Database Team' },
+            { id: 'be1', name: 'API Team', data: undefined, children: [] },
+            { id: 'be2', name: 'Database Team', data: undefined, children: [] },
           ],
         },
         {
           id: 'devops',
           name: 'DevOps',
+          data: undefined,
           children: [
-            { id: 'do1', name: 'Cloud Team' },
-            { id: 'do2', name: 'Security Team' },
+            { id: 'do1', name: 'Cloud Team', data: undefined, children: [] },
+            { id: 'do2', name: 'Security Team', data: undefined, children: [] },
           ],
         },
       ],
@@ -223,17 +238,19 @@ export const expandableTreeData: NodeData = {
     {
       id: 'product',
       name: 'Product',
+      data: undefined,
       children: [
-        { id: 'pm1', name: 'Product Managers' },
-        { id: 'design', name: 'Design' },
+        { id: 'pm1', name: 'Product Managers', data: undefined, children: [] },
+        { id: 'design', name: 'Design', data: undefined, children: [] },
       ],
     },
     {
       id: 'sales',
       name: 'Sales',
+      data: undefined,
       children: [
-        { id: 's1', name: 'Enterprise' },
-        { id: 's2', name: 'SMB' },
+        { id: 's1', name: 'Enterprise', data: undefined, children: [] },
+        { id: 's2', name: 'SMB', data: undefined, children: [] },
       ],
     },
   ],
@@ -249,8 +266,9 @@ export interface TooltipPersonData {
   department: string;
 }
 
-export const tooltipData: NodeData<TooltipPersonData> = {
+export const tooltipData: NestedNode<TooltipPersonData> = {
   id: 'ceo',
+  name: 'CEO',
   data: {
     name: 'Alexandra Wright',
     role: 'Chief Executive Officer',
@@ -260,6 +278,7 @@ export const tooltipData: NodeData<TooltipPersonData> = {
   children: [
     {
       id: 'vp1',
+      name: 'VP Engineering',
       data: {
         name: 'Robert Chen',
         role: 'VP of Engineering',
@@ -269,26 +288,31 @@ export const tooltipData: NodeData<TooltipPersonData> = {
       children: [
         {
           id: 'mgr1',
+          name: 'Eng Manager',
           data: {
             name: 'Jennifer Lee',
             role: 'Engineering Manager',
             email: 'j.lee@company.com',
             department: 'Engineering',
           },
+          children: [],
         },
         {
           id: 'mgr2',
+          name: 'Eng Manager',
           data: {
             name: 'Thomas Brown',
             role: 'Engineering Manager',
             email: 't.brown@company.com',
             department: 'Engineering',
           },
+          children: [],
         },
       ],
     },
     {
       id: 'vp2',
+      name: 'VP Marketing',
       data: {
         name: 'Maria Garcia',
         role: 'VP of Marketing',
@@ -298,12 +322,14 @@ export const tooltipData: NodeData<TooltipPersonData> = {
       children: [
         {
           id: 'mgr3',
+          name: 'Mkt Manager',
           data: {
             name: 'Kevin Smith',
             role: 'Marketing Manager',
             email: 'k.smith@company.com',
             department: 'Marketing',
           },
+          children: [],
         },
       ],
     },

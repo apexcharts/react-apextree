@@ -6,4 +6,5 @@ export type {
   GraphInstance,
   NestedNode,
   TreeOptions,
+  TreeDirection,
 } from "./types";

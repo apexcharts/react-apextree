@@ -12,15 +12,17 @@ export function BasicExample() {
       <div className="tree-container">
         <ApexTreeChart
           data={basicOrgData}
-          width={800}
-          height={500}
-          direction="top"
-          nodeWidth={120}
-          nodeHeight={50}
-          childrenSpacing={80}
-          siblingSpacing={30}
-          highlightOnHover={true}
-          enableToolbar={true}
+          options={{
+            width: 800,
+            height: 500,
+            direction: 'top',
+            nodeWidth: 120,
+            nodeHeight: 50,
+            childrenSpacing: 80,
+            siblingSpacing: 30,
+            highlightOnHover: true,
+            enableToolbar: true,
+          }}
         />
       </div>
     </div>

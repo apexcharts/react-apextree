@@ -42,11 +42,12 @@ jobs:
         if: steps.check.outputs.triggered == 'true'
         with:
           node-version: "20"
-          registry-url: "https://registry.npmjs.org"
-          cache: "npm"
 
-      - run: npm ci
+      - run: npm install -g npm@latest
         if: steps.check.outputs.triggered == 'true'
 
-      - run: npm publish --provenance --access public
+      - run: npm install
+        if: steps.check.outputs.triggered == 'true'
+
+      - run: npm publish --provenance
         if: steps.check.outputs.triggered == 'true'

@@ -1,73 +1,37 @@
 import {
   forwardRef,
   useEffect,
-  useImperativeHandle,
   useMemo,
+  useImperativeHandle,
   useRef,
 } from 'react';
 import ApexTree from 'apextree';
 import type { ApexTreeProps, ApexTreeRef, GraphInstance } from './types';
-import { buildOptions } from './utils';
 
 /**
  * react wrapper component for ApexTree
  */
 export const ApexTreeChart = forwardRef<ApexTreeRef, ApexTreeProps>(
   function ApexTreeChart(props, ref) {
-    const { data, className, style } = props;
+    const { data, options, onNodeClick, className, style } = props;
 
     const containerRef = useRef<HTMLDivElement>(null);
+    const treeRef = useRef<ApexTree | null>(null);
     const graphRef = useRef<GraphInstance | null>(null);
 
-    // memoize options to prevent unnecessary re-renders
-    const options = useMemo(() => buildOptions(props), [
-      props.width,
-      props.height,
-      props.direction,
-      props.contentKey,
-      props.siblingSpacing,
-      props.childrenSpacing,
-      props.containerClassName,
-      props.canvasStyle,
-      props.nodeWidth,
-      props.nodeHeight,
-      props.nodeTemplate,
-      props.nodeStyle,
-      props.nodeClassName,
-      props.nodeBGColor,
-      props.nodeBGColorHover,
-      props.borderWidth,
-      props.borderStyle,
-      props.borderRadius,
-      props.borderColor,
-      props.borderColorHover,
-      props.edgeWidth,
-      props.edgeColor,
-      props.edgeColorHover,
-      props.fontSize,
-      props.fontFamily,
-      props.fontWeight,
-      props.fontColor,
-      props.enableTooltip,
-      props.tooltipId,
-      props.tooltipTemplate,
-      props.tooltipMaxWidth,
-      props.tooltipMinWidth,
-      props.tooltipBorderColor,
-      props.tooltipBGColor,
-      props.tooltipFontColor,
-      props.tooltipFontSize,
-      props.tooltipPadding,
-      props.tooltipOffset,
-      props.highlightOnHover,
-      props.enableToolbar,
-      props.enableExpandCollapse,
-      props.expandCollapseButtonBGColor,
-      props.expandCollapseButtonBorderColor,
-      props.groupLeafNodes,
-      props.groupLeafNodesSpacing,
-      props.onNodeClick,
-    ]);
+    // keep onNodeClick in a ref so the effect doesn't re-run when the callback changes identity
+    const onNodeClickRef = useRef(onNodeClick);
+    useEffect(() => {
+      onNodeClickRef.current = onNodeClick;
+    });
+
+    // merge onNodeClick into options; stable object identity when neither changes
+    const mergedOptions = useMemo(() => ({
+      ...options,
+      ...(onNodeClick !== undefined && {
+        onNodeClick: (node: unknown) => onNodeClickRef.current?.(node),
+      }),
+    }), [options, onNodeClick !== undefined]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // expose imperative methods via ref
     useImperativeHandle(ref, () => ({
@@ -86,19 +50,22 @@ export const ApexTreeChart = forwardRef<ApexTreeRef, ApexTreeProps>(
       getGraph: () => graphRef.current,
     }), []);
 
-    // render tree when data or options change
+    // render tree when data or options change; destroy previous instance on cleanup
     useEffect(() => {
       if (!containerRef.current || !data) {
         return;
       }
 
-      // clear previous content
-      containerRef.current.innerHTML = '';
+      const tree = new ApexTree(containerRef.current, mergedOptions);
+      treeRef.current = tree;
+      graphRef.current = tree.render(data) as GraphInstance;
 
-      // create new tree instance and render
-      const tree = new ApexTree(containerRef.current, options);
-      graphRef.current = tree.render(data as any) as GraphInstance;
-    }, [data, options]);
+      return () => {
+        treeRef.current?.destroy();
+        treeRef.current = null;
+        graphRef.current = null;
+      };
+    }, [data, mergedOptions]);
 
     return (
       <div

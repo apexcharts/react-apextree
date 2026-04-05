@@ -4,7 +4,6 @@ export type {
   ApexTreeProps,
   ApexTreeRef,
   GraphInstance,
-  NodeData,
-  NodeOptions,
-  TreeDirection,
+  NestedNode,
+  TreeOptions,
 } from "./types";

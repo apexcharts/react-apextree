@@ -1,40 +1,21 @@
 import type { CSSProperties } from 'react';
+import type { TreeOptions, NestedNode, TreeDirection } from 'apextree';
 
-export type TreeDirection = 'top' | 'bottom' | 'left' | 'right';
-
-/**
- * node data structure expected by ApexTree
- */
-export interface NodeData<T = unknown> {
-  readonly id: string;
-  readonly name?: string;
-  readonly data?: T;
-  readonly options?: NodeOptions;
-  readonly children?: Array<NodeData<T>>;
-}
+export type { TreeOptions, NestedNode, TreeDirection };
 
 /**
- * per-node styling options
- */
-export interface NodeOptions {
-  nodeBGColor?: string;
-  nodeBGColorHover?: string;
-  borderColor?: string;
-  borderColorHover?: string;
-  fontSize?: string;
-  fontFamily?: string;
-  fontWeight?: string | number;
-  fontColor?: string;
-}
-
-/**
- * graph instance returned by ApexTree.render()
+ * public API surface of the graph instance returned by ApexTree.render().
+ * Defined as a structural interface to avoid exposing private class members
+ * from the core Graph class in wrapper public types (prevents TS4094).
  */
 export interface GraphInstance {
-  changeLayout: (direction?: TreeDirection) => void;
-  collapse: (nodeId: string) => void;
-  expand: (nodeId: string) => void;
-  fitScreen: () => void;
+  options: TreeOptions;
+  changeLayout(direction?: TreeDirection): void;
+  collapse(nodeId: string): void;
+  construct(data: NestedNode): void;
+  expand(nodeId: string): void;
+  fitScreen(): void;
+  render(options?: { keepOldPosition?: boolean; mode?: 'initial' | 'expand' | 'collapse' | 'data-update' }): void;
 }
 
 /**
@@ -51,73 +32,18 @@ export interface ApexTreeRef {
 /**
  * props for the ApexTree React component
  */
-export interface ApexTreeProps<T = unknown> {
-  // required
-  data: NodeData<T>;
-
-  // container
+export interface ApexTreeProps<T = undefined> {
+  /** Tree data structure */
+  data: NestedNode<T>;
+  /**
+   * Configuration options — imported from core apextree, zero local re-definition.
+   * onNodeClick is omitted here; use the top-level onNodeClick prop instead.
+   */
+  options?: Omit<Partial<TreeOptions>, 'onNodeClick'>;
+  /** Callback fired when a node is clicked */
+  onNodeClick?: (node: unknown) => void;
+  /** CSS class name for the container element */
   className?: string;
+  /** Inline styles for the container element */
   style?: CSSProperties;
-
-  // dimensions
-  width?: number | string;
-  height?: number | string;
-
-  // layout
-  direction?: TreeDirection;
-  siblingSpacing?: number;
-  childrenSpacing?: number;
-  containerClassName?: string;
-  canvasStyle?: string;
-
-  // node options
-  contentKey?: string;
-  nodeWidth?: number;
-  nodeHeight?: number;
-  nodeTemplate?: (content: unknown) => string;
-  nodeStyle?: string;
-  nodeClassName?: string;
-  nodeBGColor?: string;
-  nodeBGColorHover?: string;
-  borderWidth?: number;
-  borderStyle?: string;
-  borderRadius?: string;
-  borderColor?: string;
-  borderColorHover?: string;
-
-  // edge options
-  edgeWidth?: number;
-  edgeColor?: string;
-  edgeColorHover?: string;
-
-  // font options
-  fontSize?: string;
-  fontFamily?: string;
-  fontWeight?: string;
-  fontColor?: string;
-
-  // tooltip options
-  enableTooltip?: boolean;
-  tooltipId?: string;
-  tooltipTemplate?: (content: unknown) => string;
-  tooltipMaxWidth?: number;
-  tooltipMinWidth?: number;
-  tooltipBorderColor?: string;
-  tooltipBGColor?: string;
-  tooltipFontColor?: string;
-  tooltipFontSize?: string;
-  tooltipPadding?: number;
-  tooltipOffset?: number;
-
-  // features
-  highlightOnHover?: boolean;
-  enableToolbar?: boolean;
-  enableExpandCollapse?: boolean;
-  expandCollapseButtonBGColor?: string;
-  expandCollapseButtonBorderColor?: string;
-  groupLeafNodes?: boolean;
-  groupLeafNodesSpacing?: number;
-
-  // callbacks
-  onNodeClick?: (node: NodeData<T>) => void;
 }

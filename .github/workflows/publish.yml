@@ -23,6 +23,11 @@ jobs:
             VERSION=$(echo "$MSG" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+[^ ]*' | head -1)
             echo "triggered=true" >> $GITHUB_OUTPUT
             echo "version=$VERSION" >> $GITHUB_OUTPUT
+            if echo "$VERSION" | grep -qE '[-]'; then
+              echo "tag=next" >> $GITHUB_OUTPUT
+            else
+              echo "tag=latest" >> $GITHUB_OUTPUT
+            fi
           else
             echo "triggered=false" >> $GITHUB_OUTPUT
           fi
@@ -49,5 +54,5 @@ jobs:
       - run: npm install
         if: steps.check.outputs.triggered == 'true'
 
-      - run: npm publish --provenance
+      - run: npm publish --provenance --tag ${{ steps.check.outputs.tag }}
         if: steps.check.outputs.triggered == 'true'

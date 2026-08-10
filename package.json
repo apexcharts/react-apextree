@@ -1,6 +1,6 @@
 {
   "name": "react-apextree",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "React wrapper for ApexTree - a JavaScript library for creating organizational and hierarchical charts",
   "author": "ApexCharts",
   "license": "See LICENSE in LICENSE",
@@ -61,7 +61,7 @@
   "devDependencies": {
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "apextree": "^1.9.0",
+    "apextree": "^2.0.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "tsup": "^8.5.1",

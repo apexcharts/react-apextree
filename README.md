@@ -163,15 +163,66 @@ All tree configuration is passed through the `options` prop:
 | `groupLeafNodesSpacing`          | `number`                       | -           | Spacing when leaf nodes are grouped |
 | `canvasStyle`                    | `string`                       | -           | CSS styles for the canvas           |
 
+## Animated data updates
+
+Changing the `data` prop reconciles the new dataset into the live tree rather than
+rebuilding it: surviving nodes spring to their new positions, new ids grow in, and
+departed ones retract. Collapse state, selection, focus and expanded cards all
+survive the update.
+
+```tsx
+const [data, setData] = useState(q1);
+
+return (
+  <>
+    <button onClick={() => setData(q2)}>Next quarter</button>
+    <ApexTreeChart data={data} options={{ direction: "top" }} />
+  </>
+);
+```
+
+This needs `apextree >= 2.0.0`. On an older core the component falls back to the
+previous behavior and rebuilds the chart.
+
+Note that changing the `options` prop still rebuilds the instance, since options are
+read at construction. Keep `options` referentially stable (a module constant or a
+`useMemo`) if you update `data` frequently.
+
 ## Ref Methods
 
-| Method                     | Description                       |
-| -------------------------- | --------------------------------- |
-| `changeLayout(direction?)` | Change tree direction             |
-| `collapse(nodeId)`         | Collapse a node                   |
-| `expand(nodeId)`           | Expand a node                     |
-| `fitScreen()`              | Fit tree to screen                |
-| `getGraph()`               | Get the underlying graph instance |
+Conveniences for the common verbs. Anything not listed is reachable through
+`getGraph()`, which returns the fully typed graph instance.
+
+| Method                     | Description                                        |
+| -------------------------- | -------------------------------------------------- |
+| `changeLayout(direction?)` | Change tree direction                              |
+| `collapse(nodeId)`         | Collapse a node                                    |
+| `expand(nodeId)`           | Expand a node                                      |
+| `fitScreen()`              | Fit tree to screen                                 |
+| `updateData(data)`         | Reconcile a new dataset with animation             |
+| `expandAll()`              | Expand every node                                  |
+| `collapseAll()`            | Collapse every node                                |
+| `expandToDepth(depth)`     | Expand down to a given depth                        |
+| `focus(nodeId)`            | Spotlight a node's lineage and subtree              |
+| `clearFocus()`             | Clear the spotlight                                |
+| `setActivePath(nodeIds)`   | Flow an animated dash along the lineage             |
+| `clearActivePath()`        | Clear the active path                               |
+| `toggleCard(nodeId)`       | Expand or collapse a node's card in place           |
+| `zoom(factor)`             | Zoom relative to the current scale                  |
+| `centerOnNode(nodeId)`     | Center the camera on a node                         |
+| `getGraph()`               | Get the underlying graph instance                   |
+
+Everything from `updateData` down requires `apextree >= 2.0.0`.
+
+`getGraph()` is typed off the core `apextree` class you have installed, so it also
+covers `expandSubtree`, `collapseSubtree`, `expandCard`, `collapseCard`,
+`setExpandedCards`, `getExpandedCards`, `getFocusedNodeId`, `getActivePath`,
+`setSelection`, `getSelection`, `clearSelection`, `getRootNodeId` and
+`getNodeLabel`:
+
+```tsx
+treeRef.current?.getGraph()?.setExpandedCards(["alice", "bob"]);
+```
 
 ## Data Structure
 

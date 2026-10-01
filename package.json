@@ -3,7 +3,7 @@
   "version": "2.1.0",
   "description": "React wrapper for ApexTree - a JavaScript library for creating organizational and hierarchical charts",
   "author": "ApexCharts",
-  "license": "See LICENSE in LICENSE",
+  "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
     "url": "https://github.com/apexcharts/react-apextree"

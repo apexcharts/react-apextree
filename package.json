@@ -41,7 +41,7 @@
   },
   "files": [
     "dist",
-    "LICENSE",
+    "LICENSE.md",
     "README.md"
   ],
   "sideEffects": false,
